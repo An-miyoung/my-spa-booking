@@ -1,5 +1,33 @@
+import { Box, Heading, HStack, Radio, RadioGroup } from "@chakra-ui/react";
+import { staff, treatments } from "../components/temp-data";
+import { EachStaff } from "../components/staff/EachStaff";
+
 const Staff = () => {
-  return <div>Staff</div>;
+  const setFilter = () => {};
+  const filter = "all";
+  return (
+    <Box>
+      <Heading mt={10} textAlign="center">
+        Our Staff
+      </Heading>
+      <HStack m={10} spacing={8} justify="center">
+        {staff.map((staffData) => (
+          <EachStaff key={staffData.id} staffData={staffData} />
+        ))}
+      </HStack>
+      <RadioGroup onChange={setFilter} value={filter}>
+        <HStack my={10} spacing={8} justify="center">
+          <Heading size="md">Filter by treatment:</Heading>
+          <Radio value="all">All</Radio>
+          {treatments.map((t) => (
+            <Radio key={t.id} value={t.name}>
+              {t.name}
+            </Radio>
+          ))}
+        </HStack>
+      </RadioGroup>
+    </Box>
+  );
 };
 
 export default Staff;

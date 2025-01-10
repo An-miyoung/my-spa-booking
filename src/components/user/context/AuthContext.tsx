@@ -1,15 +1,8 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { getStoredLoginData, setStoredLoginData } from "../local-storage";
-import { LoginData } from "../../../types";
+import { AuthContextValue, LoginData } from "../../../types";
 
-type AuthContextValue = {
-  userId: number;
-  userToken: string;
-  setLoginData: ({ userId, userToken }: LoginData) => void;
-  clearLoginData: () => void;
-};
-
-const AuthContext = createContext<AuthContextValue | null>(null);
+export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthContextProvider = ({
   children,
