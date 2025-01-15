@@ -1,10 +1,12 @@
 import { Box, Heading, HStack, Radio, RadioGroup } from "@chakra-ui/react";
-import { staff, treatments } from "../components/temp-data";
 import { EachStaff } from "../components/staff/EachStaff";
+import { useStaff } from "../components/staff/hooks/useStaff";
+import { useTreatment } from "../components/treatments/hooks/useTreatments";
 
 const Staff = () => {
-  const setFilter = () => {};
-  const filter = "all";
+  const { staff, filter, setFilter } = useStaff();
+  const treatments = useTreatment();
+
   return (
     <Box>
       <Heading mt={10} textAlign="center">

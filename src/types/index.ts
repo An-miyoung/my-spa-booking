@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export type AuthContextValue = {
   userId: number;
   userToken: string;
@@ -29,8 +31,24 @@ export interface TreatmentType extends Id {
   description: string;
 }
 
-export interface Staff extends Id {
+export interface StaffType extends Id {
   name: string;
   treatmentNames: string[];
   image: Image;
 }
+
+export interface MonthYear {
+  year: string;
+  month: string;
+  startDate: dayjs.Dayjs;
+  firstDayOfWeek: number;
+  lastDate: number;
+}
+
+export interface AppointmentType extends Id {
+  dateTime: string;
+  treatmentName: string;
+  userId?: number;
+}
+
+export type AppointmentDateMap = Record<number, AppointmentType[]>;

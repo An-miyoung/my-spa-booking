@@ -1,8 +1,9 @@
 import { Box, Heading, HStack } from "@chakra-ui/react";
 import Treatment from "../components/treatments/Treatment";
-import { treatments } from "../components/temp-data";
+import { useTreatment } from "../components/treatments/hooks/useTreatments";
 
 const Treatments = () => {
+  const treatments = useTreatment();
   return (
     <Box>
       <Heading mt={10} textAlign="center">
