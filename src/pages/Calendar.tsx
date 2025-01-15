@@ -16,7 +16,8 @@ const Calendar = () => {
   const currentDate = dayjs();
   const koreanDays = ["일", "월", "화", "수", "목", "금", "토"];
 
-  const { appointments, monthYear, updateMonthYear } = useAppointments();
+  const { appointments, monthYear, updateMonthYear, showAll, setShowAll } =
+    useAppointments();
 
   return (
     <Box>
@@ -44,9 +45,11 @@ const Calendar = () => {
           width="48"
           position="absolute"
           right="10px"
-          checked={true}
+          checked={!showAll}
           defaultChecked
-          onChange={() => {}}
+          onChange={() => {
+            setShowAll((prev) => !prev);
+          }}
         >
           Only show available
         </Checkbox>

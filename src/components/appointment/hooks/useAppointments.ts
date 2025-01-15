@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { axiosInstance } from "../../../axiosInstance";
 import { AppointmentDateMap } from "../../../types";
@@ -8,6 +8,7 @@ import {
   getMonthYearDetails,
   getNewtMonthYear,
 } from "../../../UI/utils/monthYear";
+import { getAvailableAppointments } from "../utils";
 
 const getAppointments = async (year: string, month: string) => {
   const { data } = await axiosInstance.get(`/appointments/${year}/${month}`);
@@ -19,10 +20,19 @@ export const useAppointments = () => {
   const currentMonthYear = getMonthYearDetails(dayjs());
   const [monthYear, setMonthYear] = useState(currentMonthYear);
   const [showAll, setShowAll] = useState(false);
+  const userId = 1;
 
   const updateMonthYear = (monthIncrement: number) => {
     setMonthYear((prev) => getNewtMonthYear(prev, monthIncrement));
   };
+
+  const selectFn = useCallback(
+    (appointments: AppointmentDateMap) => {
+      if (showAll) return appointments;
+      return getAvailableAppointments(appointments, userId);
+    },
+    [showAll]
+  );
 
   useEffect(() => {
     const nextMonthYear = getNewtMonthYear(monthYear, 1);
@@ -40,6 +50,7 @@ export const useAppointments = () => {
   const { data: appointments = fallback } = useQuery({
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.month],
     queryFn: () => getAppointments(monthYear.year, monthYear.month),
+    select: (data) => selectFn(data),
   });
 
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
