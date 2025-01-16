@@ -43,6 +43,8 @@ export const useAppointments = () => {
         nextMonthYear.month,
       ],
       queryFn: () => getAppointments(nextMonthYear.year, nextMonthYear.month),
+      staleTime: 0,
+      gcTime: 30000,
     });
   }, [monthYear, queryClient]);
 
@@ -51,6 +53,9 @@ export const useAppointments = () => {
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.month],
     queryFn: () => getAppointments(monthYear.year, monthYear.month),
     select: (data) => selectFn(data),
+    staleTime: 0,
+    gcTime: 30000,
+    refetchOnWindowFocus: true,
   });
 
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
