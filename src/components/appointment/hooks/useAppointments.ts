@@ -31,7 +31,7 @@ export const useAppointments = () => {
       if (showAll) return appointments;
       return getAvailableAppointments(appointments, userId);
     },
-    [showAll]
+    [showAll, userId]
   );
 
   useEffect(() => {

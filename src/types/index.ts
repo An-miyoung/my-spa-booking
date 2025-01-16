@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 
 export type AuthContextValue = {
-  userId: number;
-  userToken: string;
-  setLoginData: ({ userId, userToken }: LoginData) => void;
-  clearLoginData: () => void;
+  userId: number | null;
+  userToken: string | null;
+  setLoginData: ({ userId, userToken }: LoginData) => void | null;
+  clearLoginData: () => void | null;
 };
 
 export type LoginData = {

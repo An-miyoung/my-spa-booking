@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../../axiosInstance";
 import { StaffType } from "../../../types";
 import { queryKeys } from "../../../react-query/constants";
+import { filterdByTreatment } from "../utils";
 
 const getStaff = async (): Promise<StaffType[]> => {
   const { data } = await axiosInstance.get("/staff");
@@ -16,11 +17,7 @@ export const useStaff = () => {
   const selectFilterFn = useCallback(
     (staff: StaffType[]) => {
       if (filter == "all") return staff;
-      return staff.filter((s) =>
-        s.treatmentNames
-          .map((n) => n.toLowerCase())
-          .includes(filter.toLowerCase())
-      );
+      return filterdByTreatment(staff, filter);
     },
     [filter]
   );
