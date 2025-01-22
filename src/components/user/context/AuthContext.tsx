@@ -1,5 +1,9 @@
-import { createContext, PropsWithChildren, useState } from "react";
-import { getStoredLoginData, setStoredLoginData } from "../local-storage";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  clearStoredLoginData,
+  getStoredLoginData,
+  setStoredLoginData,
+} from "../local-storage";
 import { AuthContextValue, LoginData } from "../../../types";
 
 const Initial_State = {
@@ -11,31 +15,40 @@ const Initial_State = {
 
 const AuthContext = createContext<AuthContextValue>(Initial_State);
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const useLoginData = () => {
+  // export const AuthContext 를 할 경우, re-render 에 대한 경고가 떠서 hook을 만든듯
+  const authValue = useContext(AuthContext);
+  if (!authValue) {
+    throw new Error(
+      "Error! AuthContext called from outside the AuthContextProvider"
+    );
+  }
+
+  return authValue;
+};
+
 export const AuthContextProvider = ({
   children,
 }: PropsWithChildren<object>) => {
-  let value: AuthContextValue = Initial_State;
   const [loginData, setLoginDataRaw] = useState<LoginData | null>(() =>
     getStoredLoginData()
   );
 
-  if (loginData === null) value = Initial_State;
-  else {
-    const userId = loginData!.userId;
-    const userToken = loginData!.userToken;
+  const userId = loginData ? loginData.userId : null;
+  const userToken = loginData ? loginData.userToken : null;
 
-    const setLoginData = ({ userId, userToken }: LoginData) => {
-      setLoginDataRaw({ userId, userToken });
-      setStoredLoginData({ userId, userToken });
-    };
+  const setLoginData = ({ userId, userToken }: LoginData) => {
+    setLoginDataRaw({ userId, userToken });
+    setStoredLoginData({ userId, userToken });
+  };
 
-    const clearLoginData = () => {
-      setLoginDataRaw({ userId: -100, userToken: "unLogged" });
-      clearLoginData();
-    };
+  const clearLoginData = () => {
+    setLoginDataRaw(null);
+    clearStoredLoginData();
+  };
 
-    value = { userId, userToken, setLoginData, clearLoginData };
-  }
+  const value = { userId, userToken, setLoginData, clearLoginData };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

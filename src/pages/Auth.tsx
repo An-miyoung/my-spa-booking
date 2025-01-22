@@ -1,5 +1,14 @@
+import { Flex } from "@chakra-ui/react";
+import SignIn from "../components/SignIn";
+import SignUp from "../components/SignUp";
+
 const Auth = () => {
-  return <div>Auth</div>;
+  return (
+    <Flex minH="84vh" textAlign="center" justify="center" gap="40">
+      <SignIn />
+      <SignUp />
+    </Flex>
+  );
 };
 
 export default Auth;

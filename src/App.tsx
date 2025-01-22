@@ -5,6 +5,7 @@ import Treatments from "./pages/Treatments";
 import Staff from "./pages/Staff";
 import Calendar from "./pages/Calendar";
 import Auth from "./pages/Auth";
+import { Profile } from "./pages/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="treatments" element={<Treatments />} />
         <Route path="staff" element={<Staff />} />
         <Route path="calendar" element={<Calendar />} />
+        <Route path="user/*" element={<Profile />} />
       </Route>
     </Routes>
   );

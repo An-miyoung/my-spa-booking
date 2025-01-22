@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 export type AuthContextValue = {
   userId: number | null;
   userToken: string | null;
-  setLoginData: ({ userId, userToken }: LoginData) => void | null;
-  clearLoginData: () => void | null;
+  setLoginData: ({ userId, userToken }: LoginData) => void;
+  clearLoginData: () => void;
 };
 
 export type LoginData = {
@@ -14,6 +14,22 @@ export type LoginData = {
 
 export interface Id {
   id: number;
+}
+
+export interface NewUser {
+  email: string;
+  name?: string;
+  address?: string;
+  phone?: string;
+  token?: string;
+}
+
+export interface User extends Id {
+  email: string;
+  name?: string;
+  address?: string;
+  phone?: string;
+  token: string;
 }
 
 export interface Image {

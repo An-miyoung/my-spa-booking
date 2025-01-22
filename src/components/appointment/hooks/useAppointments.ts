@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { axiosInstance } from "../../../axiosInstance";
-import { AppointmentDateMap } from "../../../types";
+import { AppointmentDateMap, MonthYear } from "../../../types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../../../react-query/constants";
 import {
   getMonthYearDetails,
   getNewtMonthYear,
-} from "../../../UI/utils/monthYear";
+} from "../../../utils/monthYear";
 import { getAvailableAppointments } from "../utils";
 
 const getAppointments = async (year: string, month: string) => {
@@ -23,7 +23,7 @@ export const useAppointments = () => {
   const userId = 1;
 
   const updateMonthYear = (monthIncrement: number) => {
-    setMonthYear((prev) => getNewtMonthYear(prev, monthIncrement));
+    setMonthYear((prev: MonthYear) => getNewtMonthYear(prev, monthIncrement));
   };
 
   const selectFn = useCallback(

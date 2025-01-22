@@ -1,9 +1,10 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Outlet, Link as RouterLink, useNavigate } from "react-router-dom";
 import { Box, Button, Flex, HStack, Icon, Link } from "@chakra-ui/react";
 import { GiFlowerPot } from "react-icons/gi";
-import { LoginData } from "../types";
-import { getStoredLoginData } from "../components/user/local-storage";
+import { useLoginData } from "../components/user/context/AuthContext";
+import { useUser } from "../components/user/hooks/useUser";
+import { useAuthActions } from "../components/user/hooks/useAuthActions";
 
 const Links = ["Treatments", "Staff", "Calendar"];
 
@@ -26,16 +27,9 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => (
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<LoginData | null>(null);
-
-  const getCurrentUser = () => {
-    const loginData = getStoredLoginData();
-    if (loginData !== null) setCurrentUser(loginData);
-  };
-
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
+  const { userId } = useLoginData();
+  const { user } = useUser();
+  const { signout } = useAuthActions();
 
   return (
     <div>
@@ -54,17 +48,13 @@ const NavBar = () => {
             </HStack>
           </HStack>
           <HStack>
-            {currentUser !== null && currentUser.userId ? (
+            {userId !== null && user ? (
               <>
-                {
-                  <NavLink to={`/user/${currentUser.userId}`}>
-                    {currentUser.userId}
-                  </NavLink>
-                }
-                <Button onClick={() => {}}>로그아웃</Button>
+                {<NavLink to={`/user/${userId}`}>{user.email}</NavLink>}
+                <Button onClick={signout}>로그아웃</Button>
               </>
             ) : (
-              <Button onClick={() => navigate("/auth")}>Sign in</Button>
+              <Button onClick={() => navigate("/auth")}>로그인</Button>
             )}
           </HStack>
         </Flex>
